@@ -1,5 +1,5 @@
-from myclass import MyClass
+from myclass import ArtDownloader
 
 if __name__ == "__main__":
-    cc = MyClass()
+    cc = ArtDownloader()
     cc.run()
