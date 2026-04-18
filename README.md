@@ -33,7 +33,7 @@ Credentials are read from `config.py`. Copy `config_local.py` (git-ignored) to s
 ## Usage
 
 ```bash
-python main.py [options]
+python art_downloader.py [options]
 ```
 
 | Flag | Description | Default |
@@ -47,10 +47,10 @@ python main.py [options]
 
 ```bash
 # Download art for the configured account into ./output/
-python main.py -v
+python art_downloader.py -v
 
 # Download art for a specific user into a custom directory
-python main.py --user rj --output ~/Music/art -v
+python art_downloader.py --user rj --output ~/Music/art -v
 ```
 
 ## Output Structure
@@ -77,8 +77,7 @@ Tests use `unittest.mock` — no network calls or real credentials required.
 ## Project Structure
 
 ```
-main.py                  # Entry point
-myclass.py               # ArtDownloader class
+art_downloader.py        # ArtDownloader class and entry point
 config.py                # Dummy credentials + local override import
 config_local.py          # Real credentials (git-ignored)
 requirements.txt         # Python dependencies

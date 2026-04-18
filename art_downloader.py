@@ -237,3 +237,7 @@ def _url_extension(url: str) -> str:
     path = url.split("?")[0]
     suffix = Path(path).suffix
     return suffix if suffix else ".jpg"
+
+
+if __name__ == "__main__":
+    ArtDownloader().run()
