@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch, mock_open
 
 import pytest
 
-from myclass import ArtDownloader, _safe_filename, _url_extension
+from art_downloader import ArtDownloader, _safe_filename, _url_extension
 
 
 # ---------------------------------------------------------------------------
@@ -86,7 +86,7 @@ class TestDownloadImage:
         existing = tmp_path / "art.jpg"
         existing.write_bytes(b"existing")
 
-        with patch("myclass.requests.get") as mock_get:
+        with patch("art_downloader.requests.get") as mock_get:
             result = self.dl._download_image("http://example.com/art.jpg", existing)
 
         assert result is False
@@ -99,7 +99,7 @@ class TestDownloadImage:
         mock_resp.raise_for_status = MagicMock()
         mock_resp.iter_content.return_value = [b"chunk1", b"chunk2"]
 
-        with patch("myclass.requests.get", return_value=mock_resp):
+        with patch("art_downloader.requests.get", return_value=mock_resp):
             result = self.dl._download_image("http://example.com/new.jpg", dest)
 
         assert result is True
@@ -110,7 +110,7 @@ class TestDownloadImage:
         mock_resp = MagicMock()
         mock_resp.raise_for_status.side_effect = Exception("404")
 
-        with patch("myclass.requests.get", return_value=mock_resp):
+        with patch("art_downloader.requests.get", return_value=mock_resp):
             with pytest.raises(Exception, match="404"):
                 self.dl._download_image("http://example.com/fail.jpg", dest)
 
@@ -130,7 +130,7 @@ class TestFetchAllPages:
                 "@attr": {"page": "1", "totalPages": "1"},
             }
         }
-        with patch("myclass.requests.get", return_value=_make_response(payload)):
+        with patch("art_downloader.requests.get", return_value=_make_response(payload)):
             result = self.dl._fetch_all_pages(
                 method="user.gettopalbums",
                 result_key="topalbums",
@@ -153,7 +153,7 @@ class TestFetchAllPages:
             }
         }
         responses = [_make_response(page1), _make_response(page2)]
-        with patch("myclass.requests.get", side_effect=responses):
+        with patch("art_downloader.requests.get", side_effect=responses):
             result = self.dl._fetch_all_pages(
                 method="user.gettopalbums",
                 result_key="topalbums",
@@ -164,7 +164,7 @@ class TestFetchAllPages:
 
     def test_raises_on_api_error(self):
         payload = {"error": 10, "message": "Invalid API key"}
-        with patch("myclass.requests.get", return_value=_make_response(payload)):
+        with patch("art_downloader.requests.get", return_value=_make_response(payload)):
             with pytest.raises(RuntimeError, match="Invalid API key"):
                 self.dl._fetch_all_pages(
                     method="user.gettopalbums",
@@ -181,7 +181,7 @@ class TestFetchAllPages:
                 "@attr": {"page": "1", "totalPages": "1"},
             }
         }
-        with patch("myclass.requests.get", return_value=_make_response(payload)):
+        with patch("art_downloader.requests.get", return_value=_make_response(payload)):
             result = self.dl._fetch_all_pages(
                 method="user.gettopalbums",
                 result_key="topalbums",
